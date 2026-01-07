@@ -1,0 +1,28 @@
+/*
+ * Copyright NXP 2026
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * Template overlay for OpenAMP + shared memory on the DSP-side build.
+ * Must match the CM33 overlay memory region and IPC instance.
+ */
+
+/ {
+	chosen {
+		ndp,shm = &ndp_shm0;
+		/* ndp,ipc = &ipc0; */
+	};
+
+	reserved-memory {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		ndp_shm0: ndp_shm0@20080000 {
+			reg = <0x20080000 0x00020000>; /* must match CM33 */
+			/* no-map; */
+		};
+	};
+};

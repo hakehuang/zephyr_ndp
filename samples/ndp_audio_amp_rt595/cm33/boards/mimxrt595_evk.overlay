@@ -1,0 +1,34 @@
+/*
+ * Copyright NXP 2026
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * Template overlay for OpenAMP + shared memory.
+ *
+ * You MUST adapt this to the RT595 OpenAMP setup you use.
+ * In particular, set `ndp_ipc` to your IPC service OpenAMP instance node,
+ * and set `ndp_shm0` to a reserved-memory region shared by CM33 and DSP.
+ */
+
+/ {
+	chosen {
+		/* Shared memory base for the NDP rings + PCM blocks */
+		ndp,shm = &ndp_shm0;
+
+		/* IPC service instance backed by OpenAMP/RPMsg */
+		/* ndp,ipc = &ipc0; */
+	};
+
+	reserved-memory {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		ndp_shm0: ndp_shm0@20080000 {
+			reg = <0x20080000 0x00020000>; /* 128 KiB placeholder */
+			/* no-map; */
+		};
+	};
+};

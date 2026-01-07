@@ -1,0 +1,4 @@
+name: ndp
+build:
+  cmake: .
+  kconfig: Kconfig

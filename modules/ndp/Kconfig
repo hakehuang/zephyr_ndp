@@ -1,0 +1,67 @@
+# Zephyr NDP (Near-Real-Time Data Processing) framework
+
+menuconfig NDP
+	bool "Zephyr NDP (Near-Real-Time Data Processing)"
+	default n
+	help
+	  Near-real-time dataflow DAG runtime for Zephyr RTOS.
+
+if NDP
+
+config NDP_BACKEND_SMP
+	bool "Enable SMP (intra-image) backend"
+	default y
+	help
+	  Uses Zephyr primitives for intra-image channels and scheduling.
+
+config NDP_BACKEND_AMP
+	bool "Enable AMP (inter-image) backend (stub)"
+	default n
+	help
+	  Placeholder for shared-memory + IPC notification backend.
+
+choice
+	prompt "Scheduler model"
+	default NDP_SCHED_THREAD_PER_STAGE
+
+config NDP_SCHED_THREAD_PER_STAGE
+	bool "Thread-per-stage"
+	help
+	  Each stage runs in its own Zephyr thread and blocks on its input channels.
+
+config NDP_SCHED_WORKER_POOL
+	bool "Worker pool (not implemented)"
+	help
+	  Stub for a worker-pool scheduler.
+endchoice
+
+config NDP_MAX_STAGES
+	int "Maximum stages per graph"
+	default 16
+	range 1 128
+
+config NDP_MAX_CHANNELS
+	int "Maximum channels per graph"
+	default 32
+	range 1 256
+
+config NDP_MAX_PORTS
+	int "Maximum ports per stage (inputs and outputs)"
+	default 4
+	range 1 16
+
+config NDP_STAGE_STACK_SIZE
+	int "Stage thread stack size"
+	default 2048
+
+config NDP_STAGE_PRIORITY
+	int "Default stage thread priority"
+	default 5
+	help
+	  Lower number => higher priority in Zephyr.
+
+config NDP_MSGQ_ALIGN
+	int "Message queue buffer alignment"
+	default 4
+
+endif # NDP
